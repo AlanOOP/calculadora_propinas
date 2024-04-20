@@ -8,3 +8,9 @@ export type OrderItem = {
     item: MenuItem;
     quantity: number;
 };
+
+export type TipOption = {
+    id: string;
+    value: number;
+    label: string;
+}

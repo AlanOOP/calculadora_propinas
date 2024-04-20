@@ -6,7 +6,7 @@ export default function useOrder() {
 
     const [order, setOrder] = useState<OrderItem[]>([]);
     const [total, setTotal] = useState(0);
-
+    const [tip, setTip] = useState(0);
 
     const addItem = (item: MenuItem) => {
 
@@ -23,18 +23,39 @@ export default function useOrder() {
 
             setOrder(newOrder);
             setTotal(total + item.price);
-            console.log(order);
         } else {
             setOrder([...order, { item, quantity: 1 }]);
             setTotal(total + item.price);
-            console.log(order);
         }
 
+    }
+
+    const removeItem = (item: OrderItem) => {
+        const newOrder = order.map((orderItem) => {
+            if (orderItem.item.id === item.item.id) {
+                return { ...orderItem, quantity: orderItem.quantity - 1 }
+            } else {
+                return orderItem;
+            }
+        });
+
+        setOrder(newOrder.filter((orderItem) => orderItem.quantity > 0));
+        setTotal(total - item.item.price);
+    }
+
+    const placeOrder = () => {
+        setOrder([]);
+        setTotal(0);
+        setTip(0);
     }
 
     return {
         order,
         total,
-        addItem
+        tip,
+        setTip,
+        addItem,
+        removeItem,
+        placeOrder
     }
 }
